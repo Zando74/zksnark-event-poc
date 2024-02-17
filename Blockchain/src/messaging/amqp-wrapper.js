@@ -8,7 +8,7 @@ class AmqpWrapper {
     await this.channel.assertQueue('blockchain-queue');
 
     await this.channel.consume('blockchain-queue', data => {
-      console.log(new TextDecoder().decode(data.content))
+      console.log('receive transaction')
       consumeCallback(JSON.parse(Buffer.from(data.content)));
       this.channel.ack(data);
     });

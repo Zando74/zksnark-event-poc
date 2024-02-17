@@ -1,0 +1,53 @@
+<h2>Transaction Zero knowledge Verification</h2>
+<form (ngSubmit)="submitForm()">
+    <div>
+        <label>Currency:</label>
+        <select [(ngModel)]="formData.currency" name="currency" required>
+          <option *ngFor="let option of currencyOptions" [value]="option">{{option}}</option>
+        </select>
+    </div>
+    <div>
+        <label>Emitter:</label>
+        <select [(ngModel)]="formData.emitter" name="emitter" required>
+            <option *ngFor="let option of emitterOptions" [value]="option">{{option}}</option>
+        </select>
+    </div>
+    <div>
+        <label>Receiver:</label>
+        <select [(ngModel)]="formData.receiver" name="receiver" required>
+            <option *ngFor="let option of receiverOptions" [value]="option">{{option}}</option>
+        </select>
+    </div>
+    <div>
+        <label>Amount:</label>
+        <input type="number" [(ngModel)]="formData.amount" name="amount" required>
+    </div>
+    <button type="submit" [disabled]="isSendingRequest">
+      <span *ngIf="isSendingRequest">waiting for a proof...</span>
+      <span *ngIf="!isSendingRequest">Request for a proof</span>
+  </button>
+</form>
+
+<h2>Previous transactions proof requests</h2>
+<div class="table-container">
+  <table>
+      <thead>
+          <tr>
+              <th>Currency</th>
+              <th>Emitter</th>
+              <th>Receiver</th>
+              <th>Amount</th>
+              <th>Proof status</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let submission of submissions">
+              <td>{{ submission.currency }}</td>
+              <td>{{ submission.emitter }}</td>
+              <td>{{ submission.receiver }}</td>
+              <td>{{ submission.amount }}</td>
+              <td>{{ submission.proofStatus }}</td>
+          </tr>
+      </tbody>
+  </table>
+</div>

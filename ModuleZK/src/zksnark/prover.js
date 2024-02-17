@@ -1,4 +1,4 @@
-const { generateProof, makeLocalSnarkJsZkOperator } = require('@reclaimprotocol/circom-symmetric-crypto');
+const { generateProof, makeLocalSnarkJsZkOperator, verifyProof } = require('@reclaimprotocol/circom-symmetric-crypto');
 
 class Prover {
 	constructor(key, iv) {
