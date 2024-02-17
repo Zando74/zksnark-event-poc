@@ -1,0 +1,19 @@
+{
+  "name": "modulezk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@reclaimprotocol/circom-symmetric-crypto": "github:reclaimprotocol/circom-chacha20",
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2",
+    "js-chacha20": "^1.1.0",
+    "snarkjs": "^0.7.3"
+  }
+}
