@@ -1,5 +1,5 @@
 const generateRandomCurrency = () => {
-  const currencies = ["USD", "EUR", "YEN", "GBP", 'JPY', 'NOK'];
+  const currencies = ["USD", "EUR", "AUD", "GBP", 'JPY', 'NOK'];
   return currencies[Math.floor(Math.random() * currencies.length)];
 }
 

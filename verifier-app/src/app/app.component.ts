@@ -27,7 +27,7 @@ export class AppComponent {
 
   emitterOptions = ['Jessim', 'Loïc', 'Nasri', 'Marc'];
   receiverOptions = ['Loïc', 'Jessim', 'Nasri', 'Marc'];
-  currencyOptions = ['USD', 'EUR', 'JPY', 'GBP'];
+  currencyOptions = ['USD', 'EUR', 'JPY', 'GBP', 'AUD'];
 
   async verifyProofThatEventExistInFlow(proofJson : any, plaintext : any, encrypted_hash_candidate: any) {
     const zkOperator = await makeRemoteSnarkJsZkOperator({zkeyUrl: '../assets/circuit_final.zkey', circuitWasmUrl: '../assets/circuit.wasm'});
