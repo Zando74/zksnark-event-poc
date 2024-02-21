@@ -5,11 +5,11 @@ const generateRandomCurrency = () => {
 
 const generateRandomUser = (except) => {
   const users = ["Jessim", "Loïc", "Nasri", "Marc"];
-  choosenUser = except;
-  while(choosenUser == except) {
-    choosenUser = users[Math.floor(Math.random() * users.length)]
+  let chosenUser = except;
+  while(chosenUser == except) {
+    chosenUser = users[Math.floor(Math.random() * users.length)]
   }
-  return choosenUser;
+  return chosenUser;
 }
 
 const generateRandomAmount = () => {
