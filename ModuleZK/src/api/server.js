@@ -20,11 +20,10 @@ class Server {
       const existingEvent = await this.findForValidEncryption(req.body.candidateEvent);
     
       if(existingEvent) {
-        console.log('Event Encryption found in blockchain, now generate a proof of that !')
+        console.log('Event Encryption exist in blockchain, now generate a proof of that !')
         const prover = new Prover(this.chacha20.key, existingEvent.iv);
         const proof = await prover.proofThatEventExistInFlow(new Uint8Array(Buffer.from(existingEvent.transaction.SHA256OfEventEncrypted,'hex')));
         console.log('Proof done');
-        console.log('Decryption resolved by arithmetic circuit match the hash of the candidate event');
         res.send(
           { 
             existing: true, proverResponse: { 
@@ -35,8 +34,21 @@ class Server {
         });
 
       }else{
-        console.log('Event Encryption not found in blockchain, no proof can be possible')
-        res.send({ existing: false, proverResponse: undefined });
+        console.log('Event Encryption not found in blockchain, no proof can be possible try to forge it')
+        const existingEvent = await this.getFirstValidEncryption(req.body.candidateEvent);
+        const prover = new Prover(this.chacha20.key, existingEvent.iv);
+
+        const hashedEvent = hash(JSON.stringify(req.body.candidateEvent));
+        const fakeProof = await prover.generateFakeProof(new Uint8Array(Buffer.from(existingEvent.transaction.SHA256OfEventEncrypted,'hex')), hashedEvent);
+        console.log('Fake Proof done');
+        res.send(
+          { 
+            existing: true, proverResponse: { 
+            proofJson: fakeProof.proofJson, 
+            encrypted_hash_candidate: fakeProof.encrypted_hash_candidate,
+            plaintext: fakeProof.plaintext
+          } 
+        });
       }
     });
   }
@@ -54,13 +66,19 @@ class Server {
 
       // if found return it
       if(SHA256OfeventDecrypted === hashedValue){
-        console.log('found a valid hash : ', SHA256OfeventDecrypted)
         return {transaction: transaction, iv: decryptedIV, SHA256OfeventDecrypted };
       }
       
     };
 
     return undefined;
+  }
+
+  getFirstValidEncryption = async () => {
+    let validTransaction = (await (await fetch('http://localhost:3333/blockchain')).json()).blockchain[0];
+    const decryptedIV = Buffer.from(this.chacha20.decrypt(Buffer.from(validTransaction.uniqueIvEncrypted,'hex')), 'hex');
+    const SHA256OfeventDecrypted = this.chacha20.decryptWithCustomIV(Buffer.from(validTransaction.SHA256OfEventEncrypted,'hex'), decryptedIV);
+    return {transaction: validTransaction, iv: decryptedIV, SHA256OfeventDecrypted };
   }
 
   start() {
